@@ -25,6 +25,11 @@ const FOCUSABLE =
  * The desktop/mobile switch is the design's single media query (760px),
  * done in CSS rather than matchMedia so there's no hydration mismatch
  * and no flash of the wrong bar.
+ *
+ * Both header rows span the full viewport rather than the 1240px content
+ * container, so the logo sits on the left screen edge and the nav on the
+ * right. This is a deliberate departure from the prototype, which centred
+ * the header on the same grid as the page content.
  */
 export function SiteHeader({ locations, logoUrl = '/assets/logo.png' }: Props) {
   const pathname = usePathname()
@@ -96,7 +101,6 @@ export function SiteHeader({ locations, logoUrl = '/assets/logo.png' }: Props) {
   const callLabel = activeLocation
     ? `Call ${activeLocation.name} — ${activeLocation.phoneDisplay}`
     : 'Phones & addresses'
-  const callShort = activeLocation ? `Call ${activeLocation.name}` : 'Phone numbers'
 
   const chipClass = (slug: string) =>
     [
@@ -110,7 +114,7 @@ export function SiteHeader({ locations, logoUrl = '/assets/logo.png' }: Props) {
     <header className="sticky top-0 z-50 border-b-[3px] border-ink bg-white">
       {/* ---------------- Desktop (761px and up) ---------------- */}
       <div className="hidden nav:block">
-        <div className="mx-auto flex max-w-site items-center gap-6 px-section-x py-3">
+        <div className="flex items-center gap-6 px-section-x py-3">
           <Link
             href="/"
             aria-label="Workout 24/7 home"
@@ -158,19 +162,13 @@ export function SiteHeader({ locations, logoUrl = '/assets/logo.png' }: Props) {
             >
               Join online
             </Link>
-            <a
-              href={callHref}
-              className="bg-orange px-4 py-[11px] font-extrabold text-ink no-underline hover:bg-orange-hover"
-            >
-              {callShort}
-            </a>
           </nav>
         </div>
 
         {/* Town switcher — only once a town is being viewed. */}
         {active && (
           <div data-town-switcher className="border-t border-hairline">
-            <div className="mx-auto flex max-w-site items-center gap-[14px] px-section-x py-[10px]">
+            <div className="flex items-center gap-[14px] px-section-x py-[10px]">
               <span className="font-mono text-[12px] whitespace-nowrap text-muted">
                 Viewing prices for
               </span>
