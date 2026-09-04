@@ -3,6 +3,14 @@
 Deferred items, each with the reason it was deferred. Nothing here is
 blocking development; all of it must be done before or at cutover.
 
+## Deploys
+
+- Commits must be authored with an email attached to the `toryradtke-star`
+  GitHub account (`toryradtke@gmail.com`). Vercel **blocks** any pushed
+  deployment whose commit email it cannot match to a GitHub account, and the
+  failure is silent from the git side — the push succeeds, the deploy never
+  runs. Repo-local `user.email` is pinned for this reason.
+
 ## Secrets
 
 - [ ] **Rotate the Sanity read and write tokens.** Both were returned in
@@ -46,9 +54,15 @@ Because the domain is both registered and DNS-hosted at Hostinger,
 - [ ] **Day before cutover:** drop the A record TTL to **300 seconds**, so a
       rollback takes minutes instead of hours.
 - [ ] Verify the new site fully on its Vercel preview URL first.
-- [ ] Cutover: point the A record and the `www` CNAME at Vercel. Nameservers
+- [ ] Cutover: the root is an **ALIAS** record (`@` -> `workout247fitness.com.cdn.hstgr.net`),
+      not an A record — it sits behind Hostinger's CDN, which is why `dig A`
+      returns different IPs on different days. Repoint that ALIAS (or replace
+      it with an A record) at Vercel, plus the `www` CNAME. Nameservers
       untouched. The nameserver screen sits beside "delete website" — stay out
       of it.
+- [ ] Note: the four Resend records (`resend._domainkey`, `rsend`, `send`,
+      `_dmarc`) are already in the zone and the domain is **verified**. Leave
+      them alone during cutover.
 - [ ] Keep WordPress hosting live for a few weeks as rollback. Nothing gets
       cancelled.
 - [ ] Rollback, if needed: change the two records back.
