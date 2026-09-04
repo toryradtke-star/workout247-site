@@ -10,6 +10,10 @@ blocking development; all of it must be done before or at cutover.
       transcript. Rotate in sanity.io/manage → API → Tokens, then update
       `SANITY_API_READ_TOKEN` in `.env.local` and in Vercel.
       *(Deferred by decision — the current read token stays in use until then.)*
+- [ ] **Enable 2FA on the Vercel account.** Skipped during the initial
+      project import to get past the interstitial; the account holds the
+      deploy pipeline and the production env vars.
+      *(To be done in the same pass as the token rotation above.)*
 - [ ] Set all env vars in Vercel for Production **and** Preview. See
       `.env.example` for the full list.
 - [ ] Confirm `SANITY_REVALIDATE_SECRET` matches between Vercel and the

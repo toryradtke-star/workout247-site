@@ -17,6 +17,13 @@ export async function sanityFetch<T>({
   tags?: string[]
   revalidate?: number | false
 }): Promise<T> {
+  // In development, always refetch. Tagged entries are invalidated only
+  // on demand, so without this a content edit would never appear locally
+  // until the dev server restarted.
+  if (process.env.NODE_ENV === 'development') {
+    return client.fetch<T>(query, params, { next: { revalidate: 0 } })
+  }
+
   return client.fetch<T>(query, params, {
     next: {
       // Tags and time-based revalidation are mutually exclusive in Next:

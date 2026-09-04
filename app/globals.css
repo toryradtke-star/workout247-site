@@ -76,10 +76,33 @@
 }
 
 @layer base {
-  /* Fixed header offset for in-page anchors (#towns, #join). */
+  /* Anchor offset for the sticky header. The design specifies 90px, which
+     assumed a 67px header; the real header is 76px because the addendum's
+     bordered "Join online" chip is taller than the 40px logo. Town pages add
+     the switcher row, so :has() widens the offset only where that row
+     exists — no JS, and it self-corrects if the header changes. */
+  :root {
+    --header-height: 76px;
+    --anchor-gap: 14px;
+  }
+
   html {
-    scroll-padding-top: 90px;
+    scroll-padding-top: calc(var(--header-height) + var(--anchor-gap));
     -webkit-text-size-adjust: 100%;
+  }
+
+  html:has([data-town-switcher]) {
+    --header-height: 138px;
+  }
+
+  /* Default link colors from the design. Components that set their own
+     color (nav, buttons, footer) override these. */
+  a {
+    color: var(--color-orange-dark);
+  }
+
+  a:hover {
+    color: var(--color-orange);
   }
 
   body {

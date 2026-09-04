@@ -4,6 +4,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { money } from '@/lib/format'
 import type { LocationSummary } from '@/lib/types'
 
 type Props = {
@@ -168,7 +169,7 @@ export function SiteHeader({ locations, logoUrl = '/assets/logo.png' }: Props) {
 
         {/* Town switcher — only once a town is being viewed. */}
         {active && (
-          <div className="border-t border-hairline">
+          <div data-town-switcher className="border-t border-hairline">
             <div className="mx-auto flex max-w-site items-center gap-[14px] px-section-x py-[10px]">
               <span className="font-mono text-[12px] whitespace-nowrap text-muted">
                 Viewing prices for
@@ -243,7 +244,7 @@ export function SiteHeader({ locations, logoUrl = '/assets/logo.png' }: Props) {
               >
                 <span>{loc.name}</span>
                 <span className="font-mono text-[13px] font-normal text-body-mid">
-                  {loc.fromPrice}/mo
+                  {money(loc.singlePrice)}/mo
                 </span>
               </Link>
             ))}

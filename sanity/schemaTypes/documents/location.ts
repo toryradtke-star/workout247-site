@@ -32,6 +32,15 @@ export const location = defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
+      name: 'displayOrder',
+      title: 'Order on the site',
+      description:
+        'Lower numbers come first, everywhere both towns are listed. Wells is 1.',
+      type: 'number',
+      group: 'details',
+      validation: (rule) => rule.required().integer(),
+    }),
+    defineField({
       name: 'streetAddress',
       title: 'Street address',
       type: 'string',

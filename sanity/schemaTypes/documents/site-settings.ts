@@ -9,6 +9,7 @@ export const siteSettings = defineType({
   groups: [
     { name: 'brand', title: 'Logos', default: true },
     { name: 'announcement', title: 'Announcement bar' },
+    { name: 'fees', title: 'Fees' },
     { name: 'military', title: 'Military discount' },
     { name: 'footer', title: 'Footer' },
   ],
@@ -53,6 +54,14 @@ export const siteSettings = defineType({
       ],
     }),
 
+    defineField({
+      name: 'replacementKeyFee',
+      title: 'Extra or replacement key ($)',
+      description: 'Shown as a fee line on both town pages. Enter 20, not $20.',
+      type: 'number',
+      group: 'fees',
+      validation: (rule) => rule.required().min(0).precision(2),
+    }),
     defineField({
       name: 'militaryDiscountPercent',
       title: 'Military discount (%)',
