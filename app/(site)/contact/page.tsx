@@ -125,9 +125,9 @@ export default async function ContactPage() {
             <div className="border-l-[3px] border-ink pl-[14px] font-mono text-[13px] leading-[1.7] text-body-soft">
               Membership questions · joining fees
               <br />
-              Freezing or ending a term · military discount
+              Freezing or ending a term
               <br />
-              Personal training · lost key
+              Military discount · lost key
             </div>
           </div>
 
