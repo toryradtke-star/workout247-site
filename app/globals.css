@@ -58,6 +58,10 @@
   --text-price: clamp(30px, 6vw, 42px);
   --text-price-special: clamp(46px, 8vw, 64px);
 
+  /* The design's only breakpoint: the header desktop/mobile switch
+     at max-width 760px, so desktop starts at 761px. */
+  --breakpoint-nav: 761px;
+
   /* --- Layout --------------------------------------------- */
   --container-site: 1240px;
   --spacing-section-y: clamp(36px, 6vw, 72px);
