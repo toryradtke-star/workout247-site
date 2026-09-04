@@ -22,8 +22,22 @@ blocking development; all of it must be done before or at cutover.
       project import to get past the interstitial; the account holds the
       deploy pipeline and the production env vars.
       *(To be done in the same pass as the token rotation above.)*
+- [ ] **Rotate the Resend API key.** It was pasted into an agent chat, so
+      treat it as compromised. Regenerate in Resend -> API keys (Sending
+      access, scoped to workout247fitness.com) and update Vercel.
 - [ ] Set all env vars in Vercel for Production **and** Preview. See
       `.env.example` for the full list.
+- [ ] Add the **Upstash Redis** integration from the Vercel Marketplace. Until
+      then the contact form is **not rate limited** — the honeypot still
+      applies, and the route logs a warning on every submission rather than
+      failing silently.
+- [ ] Create the **Sanity revalidation webhook** (needs
+      `SANITY_REVALIDATE_SECRET`, so it cannot be automated). Until it exists,
+      a content edit does not reach the live site until the next deploy.
+      URL: `https://<domain>/api/revalidate`
+      Filter: `_type in ["location","membershipPlan","faqEntry","page","siteSettings"]`
+      Projection: `{"tags": [_type, _type + ":" + slug.current]}`
+      Change the URL to the real domain at cutover.
 - [ ] Confirm `SANITY_REVALIDATE_SECRET` matches between Vercel and the
       Sanity webhook config.
 

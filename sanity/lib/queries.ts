@@ -120,3 +120,12 @@ export const CONTACT_QUERY = defineQuery(/* groq */ `{
     mapUrl
   }
 }`)
+
+/**
+ * Resolves the contact-form recipient server-side. The browser only ever
+ * sends a town name; the address it maps to is never accepted from the
+ * client, so a crafted request can't redirect messages elsewhere.
+ */
+export const CONTACT_RECIPIENT_QUERY = defineQuery(/* groq */ `
+  *[_type == "location" && name == $town][0]{ name, contactEmail }
+`)
