@@ -34,10 +34,17 @@ blocking development; all of it must be done before or at cutover.
 - [ ] Create the **Sanity revalidation webhook** (needs
       `SANITY_REVALIDATE_SECRET`, so it cannot be automated). Until it exists,
       a content edit does not reach the live site until the next deploy.
-      URL: `https://<domain>/api/revalidate`
+      URL: `https://workout247-site.vercel.app/api/revalidate` — must be the
+      vercel.app alias for now, because workout247fitness.com still serves
+      WordPress and has no such route.
       Filter: `_type in ["location","membershipPlan","faqEntry","page","siteSettings"]`
       Projection: `{"tags": [_type, _type + ":" + slug.current]}`
-      Change the URL to the real domain at cutover.
+- [ ] *Optional, after cutover:* repoint that webhook at
+      `https://workout247fitness.com/api/revalidate`. Not required — the
+      vercel.app alias keeps working, since both hostnames reach the same
+      deployment and purge the same cache. The only reason to bother is that
+      renaming the Vercel project would change the alias and break the webhook
+      silently.
 - [ ] Confirm `SANITY_REVALIDATE_SECRET` matches between Vercel and the
       Sanity webhook config.
 
