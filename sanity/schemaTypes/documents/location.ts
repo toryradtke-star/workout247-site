@@ -157,6 +157,31 @@ export const location = defineType({
     }),
 
     defineField({
+      name: 'aboutBlurb',
+      title: 'Short description (About page)',
+      description: 'One or two sentences about this town, shown under "Both gyms".',
+      type: 'text',
+      rows: 3,
+      group: 'details',
+    }),
+    defineField({
+      name: 'priceHeading',
+      title: 'Prices heading',
+      description: 'e.g. "Wells prices".',
+      type: 'string',
+      group: 'details',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'intro',
+      title: 'Prices intro',
+      description: 'The paragraph beside the price table.',
+      type: 'text',
+      rows: 4,
+      group: 'details',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
       name: 'equipment',
       title: 'Equipment list',
       description: 'One line each, as shown on the town page.',

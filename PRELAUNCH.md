@@ -76,9 +76,21 @@ inbound SEO equity.
 
 ## Content
 
-- [ ] Term card copy is unwritten pending three answers: whether the joining
-      fee recurs at renewal, whether freezes are available on all three terms
-      or only 12-month, and whether "MOST MEMBERS PICK THIS" is true.
+- [ ] Term card copy is partially seeded, pending three answers: whether the
+      joining fee recurs at renewal, whether freezes are available on all three
+      terms or only 12-month, and whether "MOST MEMBERS PICK THIS" is true.
+      What is seeded now claims only rate-reset timing, which is true either
+      way. Edit in Studio → Site settings → Terms.
+- [ ] The kicker on the 12-month card is deliberately **empty**, so the
+      unverified "MOST MEMBERS PICK THIS" claim does not render.
+- [ ] **Two FAQ entries are not seeded**, because both depend on pending
+      answers. Add in Studio → FAQ when confirmed:
+      - order 2, "Which term should I take?" — the existing answer claims the
+        12-month is "the best value of the three", which is unsupported at
+        identical rates.
+      - order 6, "Can I freeze my membership?" — the design's 12-month card
+        says a freeze is available on that term only, while this answer says
+        freezes are generally available. Both cannot be true.
 - [ ] Fill in the PushPress signup URL for each plan and term (6 plans × 3
       terms). Empty fields hide the button rather than rendering a dead one.
 - [ ] Set the hotspot on all six photos — they're portrait originals in

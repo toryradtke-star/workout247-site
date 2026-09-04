@@ -122,6 +122,16 @@
 
   p { text-wrap: pretty; }
 
+  /* The FAQ accordions are native <details>; the design hides the default
+     disclosure marker in both engines. */
+  summary::-webkit-details-marker {
+    display: none;
+  }
+
+  summary::marker {
+    content: '';
+  }
+
   /* The only focus affordance in the system. 3px orange, offset 2px. */
   :focus-visible {
     outline: 3px solid var(--color-orange);

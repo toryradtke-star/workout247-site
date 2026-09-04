@@ -10,6 +10,7 @@ export const siteSettings = defineType({
     { name: 'brand', title: 'Logos', default: true },
     { name: 'announcement', title: 'Announcement bar' },
     { name: 'fees', title: 'Fees' },
+    { name: 'terms', title: 'Terms' },
     { name: 'military', title: 'Military discount' },
     { name: 'footer', title: 'Footer' },
   ],
@@ -54,6 +55,77 @@ export const siteSettings = defineType({
       ],
     }),
 
+    defineField({
+      name: 'termsIntro',
+      title: 'Term section intro',
+      description: 'The paragraph under the "Pick a term" heading.',
+      type: 'text',
+      rows: 3,
+      group: 'terms',
+    }),
+    defineField({
+      name: 'terms',
+      title: 'Term options',
+      description:
+        'The three term cards. Every claim here has to be true for both towns — the same wording shows on both.',
+      type: 'array',
+      group: 'terms',
+      of: [
+        defineArrayMember({
+          type: 'object',
+          name: 'termOption',
+          fields: [
+            defineField({
+              name: 'months',
+              title: 'Term length',
+              type: 'number',
+              options: {
+                list: [
+                  { title: '3 months', value: 3 },
+                  { title: '6 months', value: 6 },
+                  { title: '12 months', value: 12 },
+                ],
+                layout: 'radio',
+              },
+              validation: (rule) => rule.required(),
+            }),
+            defineField({
+              name: 'blurb',
+              title: 'Description',
+              description:
+                'Only claims that are actually true of this term. Leave blank and the card shows the term length alone.',
+              type: 'text',
+              rows: 3,
+            }),
+            defineField({
+              name: 'isRecommended',
+              title: 'Highlight this one',
+              description: 'Gives the card the orange treatment. Use on one term only.',
+              type: 'boolean',
+              initialValue: false,
+            }),
+            defineField({
+              name: 'kicker',
+              title: 'Kicker above the term length',
+              description:
+                'e.g. "MOST MEMBERS PICK THIS". Only shows on the highlighted card, and only if it is true. Leave blank to hide it.',
+              type: 'string',
+              hidden: ({ parent }) => !parent?.isRecommended,
+            }),
+          ],
+          preview: {
+            select: { months: 'months', blurb: 'blurb' },
+            prepare({ months, blurb }) {
+              return {
+                title: `${months} months`,
+                subtitle: blurb || 'No description yet',
+              }
+            },
+          },
+        }),
+      ],
+      validation: (rule) => rule.length(3).warning('Expected three terms: 3, 6, and 12 months.'),
+    }),
     defineField({
       name: 'replacementKeyFee',
       title: 'Extra or replacement key ($)',
