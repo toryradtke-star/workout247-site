@@ -1,26 +1,132 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ============================================================
+   Workout 24/7 design tokens
+   Values are taken from the design prototypes, not invented.
+   The README's token table is the semantic layer; a few extra
+   literals below appear in the designs but not in that table.
+   ============================================================ */
+@theme {
+  /* --- Color: ink ------------------------------------------ */
+  --color-ink: #111111;          /* text, dark bands, borders, buttons */
+  --color-ink-mid: #222222;      /* de-emphasized dark text */
+  --color-ink-800: #1e1e1e;      /* dark band alt */
+  --color-ink-900: #1c1c1c;      /* dark band alt */
+
+  /* --- Color: orange (primary accent) ---------------------- */
+  --color-orange: #ff5c00;       /* open band, primary CTA, active, focus ring */
+  --color-orange-hover: #ff7526; /* primary button hover */
+  --color-orange-dark: #c43d00;  /* prices on light, default link */
+  --color-orange-tint: #ffeadf;  /* 12-month card bg, secondary hover */
+
+  /* --- Color: surfaces ------------------------------------- */
+  --color-offwhite: #f6f4f2;     /* FAQ section, card hover */
+  --color-shell: #f0ece8;
+  --color-grey-100: #eeeeee;
+
+  /* --- Color: rules and borders ---------------------------- */
+  --color-hairline: #e6e2de;      /* row dividers on white */
+  --color-hairline-warm: #d9d5d1; /* FAQ dividers */
+  --color-border-grey: #e2ded9;   /* inactive chips, term cards */
+
+  /* --- Color: body copy ------------------------------------ */
+  --color-body: #333333;
+  --color-body-soft: #444444;
+  --color-body-mid: #555555;
+  --color-muted: #6e6e6e;         /* labels, de-emphasized prices */
+
+  /* --- Color: on #111 backgrounds -------------------------- */
+  --color-ondark-100: #d8d4d0;
+  --color-ondark-200: #d3cfcb;
+  --color-ondark-300: #cfcac5;
+  --color-ondark-400: #b9b4b0;
+  --color-ondark-muted: #8d8783;  /* footer fine print */
+  --color-footer-rule: #333333;
+
+  /* --- Typography ------------------------------------------ */
+  --font-display: var(--font-archivo-black), system-ui, sans-serif;
+  --font-sans: var(--font-archivo), system-ui, sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, monospace;
+
+  /* Documented fluid scale. One-off headings in the designs use
+     arbitrary values (text-[clamp(...)]) to stay exact. */
+  --text-h1: clamp(38px, 8vw, 68px);
+  --text-h1-town: clamp(40px, 9vw, 76px);
+  --text-h2: clamp(26px, 5vw, 40px);
+  --text-h3: clamp(24px, 4.5vw, 34px);
+  --text-lede: clamp(17px, 2.2vw, 20px);
+  --text-price: clamp(30px, 6vw, 42px);
+  --text-price-special: clamp(46px, 8vw, 64px);
+
+  /* --- Layout --------------------------------------------- */
+  --container-site: 1240px;
+  --spacing-section-y: clamp(36px, 6vw, 72px);
+  --spacing-section-x: clamp(16px, 4vw, 40px);
+  --spacing-band-y: clamp(28px, 4vw, 44px);
+  --spacing-gap-2col: clamp(24px, 4vw, 52px);
+
+  /* --- The only shadow in the system ---------------------- */
+  --shadow-menu: 0 18px 30px rgb(0 0 0 / 0.18);
+
+  /* Radius is 0 everywhere. No radius tokens on purpose. */
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+@layer base {
+  /* Fixed header offset for in-page anchors (#towns, #join). */
+  html {
+    scroll-padding-top: 90px;
+    -webkit-text-size-adjust: 100%;
+  }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  body {
+    background: #fff;
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    line-height: 1.5;
+  }
+
+  /* Headings and prices are Archivo Black throughout. */
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    letter-spacing: -0.03em;
+    line-height: 0.95;
+    font-weight: 400;
+  }
+
+  p { text-wrap: pretty; }
+
+  /* The only focus affordance in the system. 3px orange, offset 2px. */
+  :focus-visible {
+    outline: 3px solid var(--color-orange);
+    outline-offset: 2px;
+  }
+
+  /* On #111 backgrounds the ring switches to white. Applied by
+     putting .on-dark on the dark band. */
+  .on-dark :focus-visible,
+  .on-dark:focus-visible {
+    outline-color: #fff;
+  }
+
+  /* Orange-on-orange would be invisible: the orange "Sign up online"
+     button carries an ink ring instead. Matches the prototype. */
+  .focus-ring-ink:focus-visible {
+    outline: 3px solid var(--color-ink);
+    outline-offset: 3px;
+  }
+
+  /* No scroll animations, parallax, reveals, or transitions anywhere.
+     Deliberate — see README. This backstops accidental additions. */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@utility tnum {
+  font-variant-numeric: tabular-nums;
 }

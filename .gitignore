@@ -39,3 +39,10 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Keep the env template in the repo (real values live in .env.local / Vercel).
+!.env.example
+
+# Sanity dev runtime
+.sanity/
+dist/
