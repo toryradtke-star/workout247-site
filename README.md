@@ -1,36 +1,58 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Workout 24/7 — multi-location gym site
 
-## Getting Started
+Production marketing site for a multi-location 24-hour gym in central Minnesota.
+Originally built in WordPress, then rebuilt on Next.js and Sanity so the owner
+could edit hours, membership pricing, and offers without a developer and without
+a redeploy.
 
-First, run the development server:
+**Live:** https://workout247fitness.com
+
+## Stack
+
+Next.js 16 (App Router) · React 19 · TypeScript · Tailwind CSS 4 · Sanity CMS 6 ·
+Upstash Redis · Resend · Vercel
+
+## What's interesting in here
+
+**Content model, not a page builder.** Locations, membership plans, FAQ entries,
+and site settings are modelled as Sanity document types with a shared
+`seo-fields` object, rather than free-form pages. Adding a town means adding a
+`location` document — the route, the nav, and the metadata follow from it.
+See `sanity/schemaTypes/`.
+
+**One route serves every location.** `app/(site)/[town]/page.tsx` renders any
+location from its slug, so `/osakis` and `/wells` are the same code path.
+
+**Tag-scoped ISR instead of rebuilds.** A Sanity webhook hits
+`app/api/revalidate/route.ts`, which verifies the payload signature and purges
+only the cache tags for documents that actually changed. Publishing a price edit
+shows up in seconds; nothing else is invalidated. The GROQ projection the webhook
+needs is documented in the route file.
+
+**A contact form that survives the internet.** `app/api/contact/route.ts` pairs a
+honeypot with a Redis-backed sliding-window limiter (`lib/rate-limit.ts`) at five
+submissions per hour per IP. Serverless functions don't share memory, so
+in-process rate limiting would be decorative — hence Upstash. The limiter fails
+*open* by design: a form that silently drops real messages is a worse outcome
+than one without rate limiting, and the honeypot still applies. Delivery goes
+through Resend.
+
+**Open-now state.** `components/open-now-band.tsx` with `lib/format.ts` computes
+staffed-hours state from the location's hours in Sanity, rather than hardcoding it.
+
+## Running it
 
 ```bash
+npm install
+cp .env.example .env.local   # fill in Sanity project id, read token, webhook secret
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The Studio is embedded at `/studio`. `.env.example` documents every variable and
+where its value comes from.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Notes
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Built with Claude Code as an AI-assisted development workflow; `AGENTS.md` holds
+the project conventions that drove it. The commit history is phased
+(content model → layout → routes → delivery) and readable in order.
