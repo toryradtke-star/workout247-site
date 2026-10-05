@@ -31,7 +31,8 @@ blocking development; all of it must be done before or at cutover.
       then the contact form is **not rate limited** — the honeypot still
       applies, and the route logs a warning on every submission rather than
       failing silently.
-- [ ] Create the **Sanity revalidation webhook** (needs
+- [x] Create the **Sanity revalidation webhook** *(done 2026-10-05, pointed at
+      https://workout247fitness.com/api/revalidate; `post` added to the filter)* (needs
       `SANITY_REVALIDATE_SECRET`, so it cannot be automated). Until it exists,
       a content edit does not reach the live site until the next deploy.
       URL: `https://workout247-site.vercel.app/api/revalidate` — must be the
@@ -45,8 +46,8 @@ blocking development; all of it must be done before or at cutover.
       deployment and purge the same cache. The only reason to bother is that
       renaming the Vercel project would change the alias and break the webhook
       silently.
-- [ ] Confirm `SANITY_REVALIDATE_SECRET` matches between Vercel and the
-      Sanity webhook config.
+- [x] Confirm `SANITY_REVALIDATE_SECRET` matches between Vercel and the
+      Sanity webhook config. *(Rotated 2026-10-05; publish → live tested in ~9s.)*
 
 ## Email delivery (Resend)
 
@@ -126,7 +127,7 @@ inbound SEO equity.
       - order 6, "Can I freeze my membership?" — the design's 12-month card
         says a freeze is available on that term only, while this answer says
         freezes are generally available. Both cannot be true.
-- [ ] Fill in the PushPress signup URL for each plan and term (6 plans × 3
+- [ ] *(Blocked: no PushPress account yet.)* Fill in the PushPress signup URL for each plan and term (6 plans × 3
       terms). Empty fields hide the button rather than rendering a dead one.
 - [ ] Set the hotspot on all six photos — they're portrait originals in
       landscape slots, so the crop depends on it.
