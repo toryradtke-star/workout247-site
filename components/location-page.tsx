@@ -142,7 +142,10 @@ export function LocationPage({ location, other, faq, settings }: LocationPageDat
       )}
 
       {/* --------------------------- Prices --------------------------- */}
-      <section className="mx-auto max-w-site px-section-x py-section-y">
+      <section
+        id="rates"
+        className="mx-auto max-w-site scroll-mt-32 px-section-x py-section-y"
+      >
         <div className="grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] items-start gap-[clamp(24px,4vw,56px)]">
           <div className="flex flex-col gap-[18px]">
             <h2 className="text-[clamp(28px,5vw,40px)] leading-[0.98] tracking-[-0.03em]">

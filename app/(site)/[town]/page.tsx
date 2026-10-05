@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { LocationPage } from '@/components/location-page'
+import { SITE_URL } from '@/lib/site'
 import type { LocationPageData } from '@/lib/types'
 import { sanityFetch } from '@/sanity/lib/fetch'
 import { LOCATION_QUERY, LOCATION_SLUGS_QUERY } from '@/sanity/lib/queries'
@@ -53,5 +54,55 @@ export default async function TownPage({ params }: Props) {
 
   if (!data.location) notFound()
 
-  return <LocationPage {...data} />
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: gymJsonLd(data.location) }}
+      />
+      <LocationPage {...data} />
+    </>
+  )
+}
+
+/**
+ * Tells search engines this page is a gym open around the clock, with the
+ * address and map pin the owner set in Sanity. `cityStateZip` reads like
+ * "Osakis, MN 56360".
+ */
+function gymJsonLd(location: NonNullable<LocationPageData['location']>) {
+  const [, city, region, postalCode] =
+    location.cityStateZip.match(/^(.+?),\s*([A-Z]{2})\s+(\d{5})/) ?? []
+
+  return JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'ExerciseGym',
+    name: `Workout 24/7 ${location.name}`,
+    url: `${SITE_URL}/${location.slug}`,
+    telephone: location.phoneTel,
+    hasMap: location.mapUrl,
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: location.streetAddress,
+      addressLocality: city ?? location.name,
+      addressRegion: region ?? 'MN',
+      postalCode,
+      addressCountry: 'US',
+    },
+    ...(location.geo && {
+      geo: {
+        '@type': 'GeoCoordinates',
+        latitude: location.geo.lat,
+        longitude: location.geo.lng,
+      },
+    }),
+    openingHoursSpecification: {
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: [
+        'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday',
+      ],
+      opens: '00:00',
+      closes: '23:59',
+    },
+  }).replace(/</g, '\\u003c')
 }

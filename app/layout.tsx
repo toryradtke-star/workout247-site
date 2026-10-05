@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Archivo, Archivo_Black, IBM_Plex_Mono } from "next/font/google";
+import { SITE_URL } from "@/lib/site";
 import "./globals.css";
 
 // Self-hosted at build time by next/font — no runtime request to Google.
@@ -25,6 +26,7 @@ const plexMono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: "Workout 24/7",
   description:
     "24-hour keycard gym with two Minnesota locations: Wells and Osakis.",
