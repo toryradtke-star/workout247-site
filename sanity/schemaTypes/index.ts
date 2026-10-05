@@ -4,6 +4,7 @@ import { faqEntry } from './documents/faq-entry'
 import { location } from './documents/location'
 import { membershipPlan } from './documents/membership-plan'
 import { page } from './documents/page'
+import { post } from './documents/post'
 import { siteSettings } from './documents/site-settings'
 import { faqOverride } from './objects/faq-override'
 import { planTerm } from './objects/plan-term'
@@ -15,6 +16,7 @@ export const schemaTypes: SchemaTypeDefinition[] = [
   membershipPlan,
   faqEntry,
   page,
+  post,
   siteSettings,
   // Objects
   planTerm,
