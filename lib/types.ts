@@ -123,3 +123,22 @@ export type PageDoc = {
   metaTitle?: string
   metaDescription?: string
 }
+
+export type PostSummary = {
+  title: string
+  slug: string
+  publishedAt: string
+  excerpt: string
+  mainImage?: SanityImageValue
+  town?: string
+}
+
+export type Post = Omit<PostSummary, 'town'> & {
+  _updatedAt: string
+  body: unknown[]
+  faq?: { _key: string; question: string; answer: string }[]
+  metaTitle?: string
+  metaDescription?: string
+  ogImage?: SanityImageValue
+  town?: { name: string; slug: string } | null
+}

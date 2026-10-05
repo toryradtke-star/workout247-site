@@ -1,16 +1,29 @@
 import type { MetadataRoute } from 'next'
 import { SITE_URL } from '@/lib/site'
 import { sanityFetch } from '@/sanity/lib/fetch'
-import { LOCATION_SLUGS_QUERY } from '@/sanity/lib/queries'
+import { LOCATION_SLUGS_QUERY, POST_SLUGS_QUERY } from '@/sanity/lib/queries'
 
-/** Static routes plus one entry per town, so a new location lists itself. */
+/**
+ * Static routes plus one entry per town and per article, so new content
+ * lists itself. /blog is left out until there is something on it.
+ */
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const towns = await sanityFetch<string[]>({
-    query: LOCATION_SLUGS_QUERY,
-    tags: ['location'],
-  })
+  const [towns, posts] = await Promise.all([
+    sanityFetch<string[]>({ query: LOCATION_SLUGS_QUERY, tags: ['location'] }),
+    sanityFetch<{ slug: string; publishedAt: string }[]>({
+      query: POST_SLUGS_QUERY,
+      tags: ['post'],
+    }),
+  ])
 
-  return ['', '/join', ...towns.map((t) => `/${t}`), '/about', '/contact'].map(
-    (path) => ({ url: `${SITE_URL}${path}` }),
-  )
+  return [
+    ...['', '/join', ...towns.map((t) => `/${t}`), '/about', '/contact'].map(
+      (path) => ({ url: `${SITE_URL}${path}` }),
+    ),
+    ...(posts.length ? [{ url: `${SITE_URL}/blog` }] : []),
+    ...posts.map((post) => ({
+      url: `${SITE_URL}/blog/${post.slug}`,
+      lastModified: post.publishedAt,
+    })),
+  ]
 }

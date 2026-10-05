@@ -129,3 +129,35 @@ export const CONTACT_QUERY = defineQuery(/* groq */ `{
 export const CONTACT_RECIPIENT_QUERY = defineQuery(/* groq */ `
   *[_type == "location" && name == $town][0]{ name, contactEmail }
 `)
+
+export const POSTS_QUERY = defineQuery(/* groq */ `
+  *[_type == "post" && defined(slug.current)] | order(publishedAt desc){
+    title,
+    "slug": slug.current,
+    publishedAt,
+    excerpt,
+    mainImage,
+    "town": location->name
+  }
+`)
+
+export const POST_SLUGS_QUERY = defineQuery(/* groq */ `
+  *[_type == "post" && defined(slug.current)]{ "slug": slug.current, publishedAt }
+`)
+
+export const POST_QUERY = defineQuery(/* groq */ `
+  *[_type == "post" && slug.current == $slug][0]{
+    title,
+    "slug": slug.current,
+    publishedAt,
+    _updatedAt,
+    excerpt,
+    mainImage,
+    body,
+    faq[]{ _key, question, answer },
+    metaTitle,
+    metaDescription,
+    ogImage,
+    "town": location->{ name, "slug": slug.current }
+  }
+`)
