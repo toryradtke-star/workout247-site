@@ -145,6 +145,13 @@ export function SiteHeader({ locations, logoUrl = '/assets/logo.png' }: Props) {
               className="mx-[6px] h-[22px] w-px bg-hairline-warm"
             />
             <Link
+              href="/blog"
+              aria-current={pathname.startsWith('/blog') ? 'page' : undefined}
+              className="border-b-2 border-transparent px-[6px] py-[9px] text-ink no-underline hover:border-b-orange"
+            >
+              Blog
+            </Link>
+            <Link
               href="/about"
               className="border-b-2 border-transparent px-[6px] py-[9px] text-ink no-underline hover:border-b-orange"
             >
@@ -246,6 +253,12 @@ export function SiteHeader({ locations, logoUrl = '/assets/logo.png' }: Props) {
                 </span>
               </Link>
             ))}
+            <Link
+              href="/blog"
+              className="flex min-h-11 items-center border-b border-hairline p-4 text-[19px] font-semibold text-ink no-underline"
+            >
+              Blog
+            </Link>
             <Link
               href="/about"
               className="flex min-h-11 items-center border-b border-hairline p-4 text-[19px] font-semibold text-ink no-underline"
