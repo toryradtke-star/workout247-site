@@ -1,3 +1,4 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
 import { OpenNowBand } from '@/components/open-now-band'
 import { SanityImage } from '@/components/sanity-image'
@@ -5,6 +6,8 @@ import { money } from '@/lib/format'
 import type { HomeData } from '@/lib/types'
 import { sanityFetch } from '@/sanity/lib/fetch'
 import { HOME_QUERY } from '@/sanity/lib/queries'
+
+export const metadata: Metadata = { alternates: { canonical: '/' } }
 
 export default async function HomePage() {
   const data = await sanityFetch<HomeData>({

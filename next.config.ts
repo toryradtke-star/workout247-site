@@ -9,7 +9,7 @@ const nextConfig: NextConfig = {
   // URLs the old WordPress site had indexed. See PRELAUNCH.md → Redirects.
   // Next strips the trailing slash first, so each source is slash-less.
   async redirects() {
-    return [
+    const oldUrls = [
       ['/about-us', '/about'],
       ['/membership', '/join'],
       ['/osakis-membership', '/osakis'],
@@ -19,7 +19,17 @@ const nextConfig: NextConfig = {
       ['/author/:slug', '/'],
       ['/feed', '/'],
       ['/wp-sitemap.xml', '/sitemap.xml'],
-    ].map(([source, destination]) => ({ source, destination, permanent: true }))
+    ]
+    return [
+      ...oldUrls.map(([source, destination]) => ({ source, destination, permanent: true })),
+      {
+        // www served a full duplicate of the site, and Google picked it as the canonical home page.
+        source: '/:path*',
+        has: [{ type: 'host' as const, value: 'www.workout247fitness.com' }],
+        destination: 'https://workout247fitness.com/:path*',
+        permanent: true,
+      },
+    ]
   },
 }
 
