@@ -29,14 +29,14 @@ export default function PrivacyPage() {
           When you send a message, your name, phone or email, town and message are emailed to the
           gym so we can answer you. They are also saved in our customer list (run for us by our web
           developer, Webcraft) so we can keep track of the conversation. We use them only to reply
-          to you. Your IP address is checked briefly to stop spam floods and isn&rsquo;t kept with
-          your message.
+          to you. The customer list also keeps the page you sent it from, your IP address and the
+          time, to stop spam floods and show what you agreed to.
         </p>
 
         <h2 className="text-[24px] font-extrabold text-ink">The email list</h2>
         <p>
-          If you sign up for gym news, we keep your email address and the time and page where you
-          signed up. Every email has a one-click unsubscribe, and unsubscribing is honored for good.
+          If you sign up for gym news, we keep your email address and the time, page and IP address
+          you signed up from. Every email has a one-click unsubscribe, and unsubscribing is honored for good.
         </p>
 
         <h2 className="text-[24px] font-extrabold text-ink">Cookies and page views</h2>
