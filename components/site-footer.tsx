@@ -84,6 +84,12 @@ export function SiteFooter({
                 Contact
               </Link>
               <Link
+                href="/privacy"
+                className="text-ondark-300 no-underline hover:text-white"
+              >
+                Privacy
+              </Link>
+              <Link
                 href="/join"
                 className="font-bold text-orange no-underline hover:underline"
               >

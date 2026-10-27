@@ -11,7 +11,35 @@ const LABEL = 'flex flex-col gap-[6px] text-[15px] font-bold'
 /**
  * The design replaces the whole form with a confirmation on success. That
  * swap is preserved here, with the error state the handoff asks for.
+ *
+ * After the gym is emailed (/api/contact), a copy goes to Webcraft's CRM
+ * (webcraft-mail's lead form "contact") so it shows in the inbox and the
+ * pipeline. It is sent from the browser, because the CRM limits submissions
+ * per visitor IP, and it's best effort: the email is what makes sure nothing
+ * is lost.
  */
+const CRM_LEAD = 'https://mail.webcraftmn.com/api/lead'
+
+function sendToCrm(p: Record<string, FormDataEntryValue>) {
+  const text = (k: string) => (typeof p[k] === 'string' ? (p[k] as string).trim() : '')
+  const [first, ...rest] = text('name').split(/\s+/)
+  const contact = text('contact')
+  const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(contact)
+  const anon = document.cookie.match(/(?:^|; )wm_id=([^;]*)/)?.[1]
+  fetch(CRM_LEAD, {
+    method: 'POST',
+    // text/plain keeps it a simple CORS request, like wm.js.
+    headers: { 'Content-Type': 'text/plain' },
+    keepalive: true,
+    body: JSON.stringify({
+      site: 'workout247', form: 'contact', first_name: first, last_name: rest.join(' '),
+      ...(isEmail ? { email: contact } : { phone: contact }),
+      'custom:town': text('location'), message: text('message'), company: text('website'),
+      url: window.location.href, referrer: document.referrer,
+      ...(anon ? { anon_id: decodeURIComponent(anon) } : {}),
+    }),
+  }).catch(() => {})
+}
 export function ContactForm({ towns }: { towns: string[] }) {
   const [status, setStatus] = useState<Status>('idle')
   const [error, setError] = useState<string | null>(null)
@@ -36,6 +64,7 @@ export function ContactForm({ towns }: { towns: string[] }) {
         throw new Error(body?.error ?? 'That did not go through.')
       }
       setStatus('sent')
+      sendToCrm(payload)
     } catch (err) {
       setError(
         err instanceof Error && err.message

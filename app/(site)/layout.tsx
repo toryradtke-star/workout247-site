@@ -1,3 +1,4 @@
+import Script from 'next/script'
 import { SiteFooter } from '@/components/site-footer'
 import { SiteHeader } from '@/components/site-header'
 import { sanityFetch } from '@/sanity/lib/fetch'
@@ -26,6 +27,8 @@ export default async function SiteLayout({
       <SiteHeader locations={locations} />
       {children}
       <SiteFooter locations={locations} settings={settings} />
+      {/* webcraft-mail: the blog signup popup, page views for known contacts, and the CRM (see /privacy). */}
+      <Script src="https://mail.webcraftmn.com/wm.js" data-site="workout247" strategy="afterInteractive" />
     </>
   )
 }
